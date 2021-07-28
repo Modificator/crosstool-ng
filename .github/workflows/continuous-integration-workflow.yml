@@ -19,7 +19,7 @@ jobs:
       - name: "prereq Linux"
         if: ${{ runner.os == 'Linux' }}
         run: |
-          sudo apt-get install -y gperf help2man libtool-bin
+          sudo apt-get install -y gperf help2man libtool-bin zip
       - name: "prereq macOS"
         if: ${{ runner.os == 'macOS' }}
         run: |
@@ -181,9 +181,13 @@ jobs:
             build.log
             .config
         if: ${{ always() }}
+      - name: "pack build result"
+        run: |
+          zip -r ${{ matrix.sample }}.${{ matrix.host }}.zip .build/*
+        if: ${{ always() }}
       - name: "upload toolchain"
         uses: actions/upload-artifact@v2
         with:
           name: "${{ matrix.sample }}.${{ matrix.host }}.zip"
-          path: '.build/*'
+          path: "${{ matrix.sample }}.${{ matrix.host }}.zip"
         if: ${{ always() }}
