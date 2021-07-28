@@ -181,3 +181,9 @@ jobs:
             build.log
             .config
         if: ${{ always() }}
+      - name: "upload toolschain"
+        uses: actions/upload-artifact@v2
+        with:
+          name: "${{ matrix.sample }}.${{ matrix.host }}.zip"
+          path: '.build/*'
+        if: ${{ always() }}
